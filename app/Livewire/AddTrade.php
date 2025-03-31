@@ -17,7 +17,7 @@ class AddTrade extends Component
 
     public function random()
     {
-        $symbols = ['AAPL', 'TSLA', 'GOOGL', 'AMZN', 'SPC', 'NABIL', 'NIFRA', 'NFS'];
+        $symbols = ['SPC', 'NABIL', 'NIFRA', 'NFS'];
         $this->symbol = $symbols[array_rand($symbols)]; 
         $this->is_open = (bool) rand(0, 1);
         $this->units = rand(10, 100); 

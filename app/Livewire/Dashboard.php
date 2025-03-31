@@ -3,12 +3,14 @@
 namespace App\Livewire;
 
 use App\Models\Trade;
+use App\Models\WebTable;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public ?Trade $selected_trade = null;
+    public ?WebTable $web_data = null;
 
     public function addTrade()
     {
@@ -23,6 +25,7 @@ class Dashboard extends Component
 
     public function change($tradeId) {
         $this->selected_trade = Trade::find($tradeId);
+        $this->web_data = WebTable::where('symbol', $this->selected_trade->symbol)->first();
     }
 
     #[Title('Dashboard')]

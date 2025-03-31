@@ -13,11 +13,14 @@
         </div>
         @if($selected_trade)
             <div class="bg-white w-full rounded-2xl p-4 overflow-y-auto no-scrollbar border border-gray-100">
-            <div class="pl-2 flex flex-col gap-2 border-l-4 {{ $selected_trade->sell_price > $selected_trade->buy_price ? 'border-l-green-500' : 'border-l-red-500' }}">
+            <div class="pl-2 flex flex-col gap-2 border-l-4 {{ $web_data->ltp > $selected_trade->buy_price ? 'border-l-green-500' : 'border-l-red-500' }}">
                 <h1>Net Profit/Loss</h1>
-                <h2>{{abs(($selected_trade->sell_price - $selected_trade->buy_price)*$selected_trade->units)}}</h2>
+                <h2>{{abs(($web_data->ltp - $selected_trade->buy_price)*$selected_trade->units)}}</h2>
             </div>
-            
+            <div class="p-2 gap-2 grid grid-cols-6 bg-blue-400 rounded-xl mt-2">
+                <h1>LTP</h1>
+                <h1>{{$web_data->ltp}}</h1>
+            </div>
             <div class="p-2 gap-2 grid grid-cols-6">
                 <h1>Units</h1>
                 <h2>{{$selected_trade->units}}</h2>
@@ -33,6 +36,7 @@
             <div class="p-2 gap-2 grid grid-cols-6">
                 <h1>Target</h1>
                 <h2>{{$selected_trade->target}}</h2>
+                <h2 class="bg-amber-300 p-1 rounded-xl border border-amber-200">{{$selected_trade->target - $web_data->ltp}} off target</h2>
             </div>
             <div class="p-2 gap-2 grid grid-cols-6">
                 <h1>Stoploss</h1>
