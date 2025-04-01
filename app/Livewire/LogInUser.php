@@ -13,11 +13,6 @@ class LogInUser extends Component
     public $password;
 
     public function logInUser(Request $request) {
-        // $validated = $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required|string' 
-        // ]);
-
         $validated = $this->validate([
             'email' => 'required|email',
             'password' => 'required|string', 

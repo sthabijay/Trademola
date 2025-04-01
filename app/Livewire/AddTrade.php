@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Trade;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AddTrade extends Component
@@ -14,6 +15,11 @@ class AddTrade extends Component
     public $sell_price;
     public $target;
     public $stoploss;
+    public $user; 
+
+    public function mount(){
+        $this->user = Auth::user()->id;        
+    }
 
     public function random()
     {
@@ -52,7 +58,9 @@ class AddTrade extends Component
             'sell_price'=>$this->sell_price, 
             'units'=>$this->units, 
             'target'=>$this->target, 
-            'stoploss'=>$this->stoploss]);
+            'stoploss'=>$this->stoploss,
+            'user_id'=>$this->user
+        ]);
 
         return redirect()->to('/dashboard');    
     }

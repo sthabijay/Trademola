@@ -1,15 +1,19 @@
 <div class="max-w-7xl mx-auto h-full p-8 flex flex-col gap-2">
     <nav class="bg-white h-16 px-2 shrink-0 flex justify-end items-center rounded-2xl border border-gray-100 gap-2">
-        @guest
-            <button wire:click="registerUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Register</button>
-            <button wire:click="logInUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log in</button>    
-        @endguest
+        {{-- <div class="text-3xl font-bold font-sans px-2 bg-gradient-to-b from-red-400 to-orange-400 bg-clip-text text-transparent">Trademola</div> --}}
 
-        @auth
-            <span class="px-2 underline text-lg">Hi, {{ Auth::user()->name }}</span>
-            <button wire:click="logOutUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log out</button>    
-        @endauth
-        
+        <div>
+            @guest
+                <button wire:click="registerUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Register</button>
+                <button wire:click="logInUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log in</button>    
+            @endguest
+
+            @auth
+                <span class="px-2 underline text-lg">Hi, {{ Auth::user()->name }}</span>
+                <button wire:click="logOutUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log out</button>    
+            @endauth 
+        </div>
+               
     </nav>    
     <main class="max-h-[550px] min-h-[550px] flex gap-2">
         <div class="h-full flex flex-col gap-2">

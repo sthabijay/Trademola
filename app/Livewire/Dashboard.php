@@ -13,6 +13,11 @@ class Dashboard extends Component
 {
     public ?Trade $selected_trade = null;
     public ?WebTable $web_data = null;
+    public $trades;
+
+    public function mount(){
+        $this->trades = Trade::where('user_id', Auth::id())->get();
+    }
 
     public function change($tradeId) {
         $this->selected_trade = Trade::find($tradeId);
@@ -54,6 +59,6 @@ class Dashboard extends Component
     #[Title('Dashboard')]
     public function render()
     {
-        return view('livewire.dashboard', ['trades'=> Trade::all()]);
+        return view('livewire.dashboard');
     }
 }

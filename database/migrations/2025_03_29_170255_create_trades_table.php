@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer("sell_price")->nullable();
             $table->integer("target")->nullable();
             $table->integer("stoploss")->nullable();
+
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 

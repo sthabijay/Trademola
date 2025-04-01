@@ -11,8 +11,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', Dashboard::class);
-Route::get('/trade/add', AddTrade::class);
-Route::get('/trade/edit/{id}', EditTrade::class);
-Route::get('/user/register', RegisterUser::class);
-Route::get('/user/login', LogInUser::class);
+Route::get('user/register', RegisterUser::class);
+Route::get('user/login', LogInUser::class)->name('login');
+
+Route::middleware('auth')->group(function (){
+    Route::get('/dashboard', Dashboard::class)->middleware('auth');
+    Route::get('/trade/add', AddTrade::class);
+    Route::get('/trade/edit/{id}', EditTrade::class); 
+});
