@@ -14,13 +14,17 @@ return new class extends Migration
         Schema::create('trades', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            
+            // Required columns
             $table->string("symbol");
-            $table->boolean("is_open");
             $table->integer("buy_price");
-            $table->integer("sell_price");
             $table->integer("units");
-            $table->integer("target");
-            $table->integer("stoploss");
+
+            // Optional columns
+            $table->boolean("is_open")->nullable();
+            $table->integer("sell_price")->nullable();
+            $table->integer("target")->nullable();
+            $table->integer("stoploss")->nullable();
         });
     }
 

@@ -5,8 +5,10 @@ namespace App\Livewire;
 use App\Models\Trade;
 use Livewire\Component;
 
-class AddTrade extends Component
+class EditTrade extends Component
 {
+    public Trade $trade;
+
     public $symbol;
     public $is_open = false;
     public $units;
@@ -15,16 +17,16 @@ class AddTrade extends Component
     public $target;
     public $stoploss;
 
-    public function random()
+    public function mount($id)
     {
-        $symbols = ['SPC', 'NABIL', 'NIFRA', 'NFS'];
-        $this->symbol = $symbols[array_rand($symbols)]; 
-        $this->is_open = (bool) rand(0, 1);
-        $this->units = rand(10, 100); 
-        $this->buy_price = rand(400, 500);
-        $this->sell_price = rand(400, 500);
-        $this->target = rand(500, 600);
-        $this->stoploss = rand(300, 400); 
+        $this->trade = Trade::findOrFail($id);
+        $this->symbol = $this->trade->symbol;
+        $this->is_open = $this->trade->is_open;
+        $this->units = $this->trade->units;
+        $this->buy_price = $this->trade->buy_price;
+        $this->sell_price = $this->trade->sell_price;
+        $this->target = $this->trade->target;
+        $this->stoploss = $this->trade->stoploss;
     }
 
     public function save() {
@@ -45,7 +47,7 @@ class AddTrade extends Component
             'stoploss' => 'nullable|integer',
         ]);
 
-        Trade::create([
+        $this->trade->update([
             'symbol'=>$this->symbol, 
             'is_open'=>$this->is_open, 
             'buy_price'=>$this->buy_price, 
@@ -59,6 +61,6 @@ class AddTrade extends Component
 
     public function render()
     {
-        return view('livewire.add-trade');
+        return view('livewire.edit-trade');
     }
 }

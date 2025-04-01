@@ -43,6 +43,7 @@
                 <h2>{{$selected_trade->stoploss}}</h2>
             </div>
             <button wire:click="deleteTrade({{$selected_trade}})" class="bg-red-500 p-2 px-4 rounded-xl text-white border-2 border-gray-400 hover:border-gray-200 transition-all cursor-pointer">Delete</button>
+            <button wire:click="editTrade({{$selected_trade}})" class="bg-blue-500 p-2 px-4 rounded-xl text-white border-2 border-gray-400 hover:border-gray-200 transition-all cursor-pointer">Edit</button>
         </div>
         @endif
     </main>

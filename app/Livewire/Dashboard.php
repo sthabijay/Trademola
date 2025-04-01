@@ -23,6 +23,10 @@ class Dashboard extends Component
         return redirect()->to('/dashboard');
     }
 
+    public function editTrade(Trade $trade){
+        return redirect()->to("/trade/edit/{$trade->id}");
+    }   
+
     public function change($tradeId) {
         $this->selected_trade = Trade::find($tradeId);
         $this->web_data = WebTable::where('symbol', $this->selected_trade->symbol)->first();
