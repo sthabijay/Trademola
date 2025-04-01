@@ -1,5 +1,16 @@
 <div class="max-w-7xl mx-auto h-full p-8 flex flex-col gap-2">
-    <nav class="bg-white h-16 shrink-0 flex justify-center items-center rounded-2xl border border-gray-100">This is nav</nav>    
+    <nav class="bg-white h-16 px-2 shrink-0 flex justify-end items-center rounded-2xl border border-gray-100 gap-2">
+        @guest
+            <button wire:click="registerUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Register</button>
+            <button wire:click="logInUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log in</button>    
+        @endguest
+
+        @auth
+            <span class="px-2 underline text-lg">Hi, {{ Auth::user()->name }}</span>
+            <button wire:click="logOutUser" class="bg-blue-500 p-2 w-24 rounded-xl text-white border border-blue-300 hover:border-blue-50 transition-all">Log out</button>    
+        @endauth
+        
+    </nav>    
     <main class="max-h-[550px] min-h-[550px] flex gap-2">
         <div class="h-full flex flex-col gap-2">
             <div class="bg-neutral-50 max-h-96 w-3xs p-2 rounded-2xl shrink-0 px-auto flex flex-col gap-2 border border-gray-100 justify-between overflow-scroll no-scrollbar">
