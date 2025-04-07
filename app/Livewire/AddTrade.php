@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Trade;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class AddTrade extends Component
@@ -65,6 +66,7 @@ class AddTrade extends Component
         return redirect()->to('/dashboard');    
     }
 
+    #[Title('Add Trade')]
     public function render()
     {
         return view('livewire.add-trade');

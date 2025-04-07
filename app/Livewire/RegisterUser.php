@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class RegisterUser extends Component
@@ -30,6 +31,7 @@ class RegisterUser extends Component
         return redirect()->to('/dashboard');
     }
 
+    #[Title('Register')]
     public function render()
     {
         return view('livewire.auth.register-user');

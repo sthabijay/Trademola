@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Trade;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class EditTrade extends Component
@@ -59,6 +60,7 @@ class EditTrade extends Component
         return redirect()->to('/dashboard');    
     }
 
+    #[Title('Edit Trade')]
     public function render()
     {
         return view('livewire.edit-trade');

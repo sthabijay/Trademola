@@ -23,8 +23,9 @@
             <div class="text-red-500 text-sm">{{ $message }}</div> 
         @enderror
 
-        <div class="flex justify-end gap-2">
-            <input type="submit" value="Register" class="bg-blue-500 p-2 w-48 mt-4 rounded-xl cursor-pointer text-white border-2 border-blue-500 hover:border-blue-200 transition-all">
+        <div class="mt-2 flex justify-end items-center gap-4">
+            <a href="/user/login" class="underline text-blue-700">Already have an account?</a>
+            <input type="submit" value="Register" class="bg-blue-500 p-2 w-48 rounded-xl cursor-pointer text-white border-2 border-blue-500 hover:border-blue-200 transition-all">
         </div>
     </form>
 </div>

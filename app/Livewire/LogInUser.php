@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class LogInUser extends Component
@@ -29,6 +30,7 @@ class LogInUser extends Component
         ]);
     }
 
+    #[Title('Log In')]
     public function render()
     {
         return view('livewire.auth.log-in-user');
