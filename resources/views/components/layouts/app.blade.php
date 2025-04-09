@@ -6,7 +6,7 @@
         <title>{{ $title ?? 'Page Title' }}</title>
         @vite('resources/css/app.css')
     </head>
-    <body class="bg-gradient-to-b  from-orange-200 to-red-300 bg-no-repeat h-dvh w-full">
+    <body class="bg-gradient-to-b  from-white to-cyan-200 bg-no-repeat h-dvh w-full overflow-hidden">
         {{ $slot }}
     </body>
 </html>
