@@ -24,8 +24,8 @@
         @enderror
 
         <label for="password_confirmation" class="text-gray-900">Confirm Password*</label>
-        <input type="password" name="password_confirmation" class="border-none outline-none h-8 px-2 rounded-sm bg-gray-100 focus:ring focus:ring-gray-300 transition-all">
-        @error('password') 
+        <input type="password" name="password_confirmation" wire:model="password_confirmation" class="border-none outline-none h-8 px-2 rounded-sm bg-gray-100 focus:ring focus:ring-gray-300 transition-all">
+        @error('password_confirmation') 
             <div class="text-red-500 text-sm">{{ $message }}</div> 
         @enderror
 

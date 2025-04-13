@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Portfolio;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
@@ -12,6 +13,7 @@ class RegisterUser extends Component
     public $name;
     public $email;
     public $password;
+    public $password_confirmation;
 
     public function saveUser(){
         $this->validate([
@@ -24,6 +26,15 @@ class RegisterUser extends Component
             'name'=>$this->name,
             'email'=>$this->email,
             'password'=>$this->password,
+        ]);
+
+        Portfolio::create([
+            'name'=>"Main",
+            'user_id'=>$user->id,
+            'IS_MAIN'=>true,
+            'gross'=>0,
+            'current_investment'=>0,
+            'current_value'=>0
         ]);
 
         Auth::login($user);
