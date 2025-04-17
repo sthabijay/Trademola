@@ -1,6 +1,6 @@
 <div>
     <div>
-        @if ($show)
+        @if ($showLogModel)
             <div class="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
                 <div class="bg-white p-6 rounded-lg w-96 shadow-lg space-y-4">
                     <h2 class="text-xl font-semibold text-gray-800">Add New Log</h2>
@@ -86,7 +86,7 @@
 
                     {{-- Buttons --}}
                     <div class="flex justify-end gap-2">
-                        <button wire:click="$set('show', false)" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                        <button wire:click="$set('showLogModel', false)" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
                             Cancel
                         </button>
                         <button wire:click="createLog()" class="px-4 py-2 bg-cyan-700 text-white rounded hover:bg-cyan-600">
@@ -97,6 +97,81 @@
             </div>
         @endif
     </div>
+
+    <div>
+        @if ($showEntryModel)
+            <div class="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+                <div class="bg-white p-6 rounded-lg w-96 shadow-lg space-y-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Add New Entry</h2>
+
+                    {{-- Symbol --}}
+                    <div>
+                        <input
+                            type="text"
+                            wire:model="symbol"
+                            class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-cyan-200"
+                            placeholder="Symbol"
+                            disabled
+                        />
+                        @error('symbol')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Price --}}
+                    <div>
+                        <input
+                            type="number"
+                            wire:model="price"
+                            class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-cyan-200"
+                            placeholder="Price"
+                        />
+                        @error('price')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Units --}}
+                    <div>
+                        <input
+                            type="number"
+                            wire:model="units"
+                            class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-cyan-200"
+                            placeholder="Units"
+                        />
+                        @error('units')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Buy or Sell --}}
+                    <div>
+                        <select 
+                            wire:model="is_buy" 
+                            class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-cyan-200"
+                        >
+                            <option value="">Select Type</option>
+                            <option value="1">Buy</option>
+                            <option value="0">Sell</option>
+                        </select>
+                        @error('is_buy')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Buttons --}}
+                    <div class="flex justify-end gap-2">
+                        <button wire:click="$set('showEntryModel', false)" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                            Cancel
+                        </button>
+                        <button wire:click="createEntry()" class="px-4 py-2 bg-cyan-700 text-white rounded hover:bg-cyan-600">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>  
 
     <nav class="flex justify-between py-8 px-12">
         <span class="text-2xl font-serif">Trademola</span>
@@ -178,7 +253,7 @@
                     </div>                    
                 </div>
                 <div class="bg-gray-300 w-full h-0.5 my-4"></div>
-                <button wire:click="$set('show', true)" class="w-full bg-cyan-700 py-2 rounded-lg border border-cyan-700 text-white hover:bg-white hover:border-cyan-700 hover:text-cyan-700 transition-all cursor-pointer">+ Add Log</button>
+                <button wire:click="$set('showLogModel', true)" class="w-full bg-cyan-700 py-2 rounded-lg border border-cyan-700 text-white hover:bg-white hover:border-cyan-700 hover:text-cyan-700 transition-all cursor-pointer">+ Add Log</button>
                 <div class="pt-4 flex flex-col gap-2 overflow-scroll no-scrollbar">
                     @foreach($logs as $log)
                         <div wire:click="selectLog({{$log->id}})" class="border bg-white border-gray-500 rounded-lg p-2 hover:bg-blue-50 cursor-pointer transition-all">
@@ -258,7 +333,7 @@
                             </h1>
                         </div>
                         <h1 class="pt-2">Entries:</h1>
-                        <button class="w-full bg-cyan-700 py-2 rounded-lg border border-cyan-700 text-white hover:bg-white hover:border-cyan-700 hover:text-cyan-700 transition-all cursor-pointer">+ Add Entries</button>
+                        <button wire:click="addEntry()" class="w-full bg-cyan-700 py-2 rounded-lg border border-cyan-700 text-white hover:bg-white hover:border-cyan-700 hover:text-cyan-700 transition-all cursor-pointer">+ Add Entries</button>
                         <div class="py-2 flex flex-col gap-2 overflow-scroll h-[360px] no-scrollbar">
                             @for($i = 0; $i < 10; $i++)
                                 <div class="border border-green-500 bg-green-100 rounded-lg p-2">

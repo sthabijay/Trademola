@@ -19,7 +19,8 @@ class Dashboard extends Component
     public ?WebTable $web_data = null;
     public $trades;
     public $logs;
-    public $show = false;
+    public $showLogModel = false;
+    public $showEntryModel = false;
 
     public $symbol;
     public $nickname;
@@ -30,7 +31,7 @@ class Dashboard extends Component
     public $tags;
     public $note;
 
-    public $portfolioId;
+    public $portfolioId; 
 
     protected $rules = [
         'symbol' => 'required|string|max:10',
@@ -93,6 +94,12 @@ class Dashboard extends Component
         ]);
 
         return redirect()->to("/dashboard/{$this->portfolioId}");
+    }
+
+    public function addEntry()
+    {
+        $this->showEntryModel = true;
+        $this->symbol = $this->selected_log->symbol;
     }
 
     public function addTrade()
