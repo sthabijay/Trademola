@@ -17,8 +17,7 @@ Route::get('user/login', LogInUser::class)->name('login');
 Route::middleware('auth')->group(function (){
     Route::get('/dashboard', Portfolios::class);
     Route::get('/dashboard/{id}', Dashboard::class);
-    // Route::get('/dashboard/{id}', Dashboard::class)->middleware('can:view,portfolio');
-    Route::get('/portfolios', Portfolios::class);
+    Route::get('/portfolios', Portfolios::class)->name('portfolios');
     Route::get('/trade/add', AddTrade::class);
     Route::get('/trade/edit/{id}', EditTrade::class); 
 });

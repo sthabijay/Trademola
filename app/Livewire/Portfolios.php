@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Portfolio;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -20,6 +21,15 @@ class Portfolios extends Component
 
     public function navigate($location){
         return redirect()->to("/dashboard/{$location}");
+    }
+
+    public function logOutUser(Request $request){
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
+        return redirect()->to('/dashboard');
     }
 
     public function createPortfolio(){

@@ -206,7 +206,7 @@
                     </a>
                 </li>
                 <li>
-                    <button wire:click="logOutUser" class="flex bg-red-100 text-red-700 rounded-lg p-4 px-8 gap-2 w-[202px] hover:bg-red-200 transition-all cursor-pointer">
+                    <button wire:click="logOutUser()" class="flex bg-red-100 text-red-700 rounded-lg p-4 px-8 gap-2 w-[202px] hover:bg-red-200 transition-all cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg> Log out    
                     </button>
                 </li>
@@ -215,6 +215,7 @@
         <main class="bg-white w-full flex border-2 rounded-xl border-gray-300">
             <div class="w-[330px] bg-gray-50 rounded-l-2xl p-4 border-r-2 border-gray-300 shrink-0 flex flex-col">
                 <div class="flex flex-col">
+                    <h1 class="text-xl text-gray-700">{{$user->name}} Acc</h1>
                     <h1 class="text-xl text-gray-700">{{$selected_portfolio->name}} Portfolio</h1>
                     <h1 class="text-2xl">Total Gain</h1>
                     <div class="text-3xl flex justify-between items-center">

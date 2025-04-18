@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Log;
 use App\Models\Portfolio;
 use App\Models\Trade;
+use App\Models\User;
 use App\Models\WebTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
+    public ?User $user = null;
     public ?Portfolio $selected_portfolio = null;
     public ?Log $selected_log = null;
     public ?Trade $selected_trade = null;
@@ -48,9 +50,12 @@ class Dashboard extends Component
         $this->trades = Trade::where('user_id', Auth::id())->get();
 
         $this->portfolioId = $id;
-
         $this->selected_portfolio = Portfolio::find($id);
+        $this->user = User::find($this->selected_portfolio->user_id);
+
         $this->logs = Log::where('portfolio_id', $id)->orderBy('updated_at', 'desc')->get();
+
+        $this->authorize('view', $this->selected_portfolio);
     }
 
     public function change($tradeId) {
