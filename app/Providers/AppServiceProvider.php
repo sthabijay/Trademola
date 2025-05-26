@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Entry;
+use App\Models\Log;
+use App\Observers\EntryObserver;
+use App\Observers\LogObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Entry::observe(EntryObserver::class);
+        Log::observe(LogObserver::class);
     }
 }

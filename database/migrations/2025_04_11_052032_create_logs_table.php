@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('symbol');
             $table->string('nickname')->nullable();
             $table->integer('total_units');
-            $table->integer('gross');
+            $table->integer('gross')->nullable();
             $table->integer('avg_buy_price');
             $table->integer('wacc')->nullable();
             $table->integer('target')->nullable();

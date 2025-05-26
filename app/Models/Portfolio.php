@@ -15,8 +15,27 @@ class Portfolio extends Model
         'IS_MAIN',
         'gross',
         'current_investment',
-        'current_value'
+        'current_value',
+        'total_units'
     ];
+
+    public function reevaluateMetrics()
+    {    
+        $this->gross = round($this->logs()->sum('gross'), 2);
+
+        $this->current_investment = round($this->logs->sum(function ($log) {
+            return $log->total_units * $log->avg_buy_price;
+        }), 2);
+
+        $this->current_value = round($this->logs->sum(function ($log) {
+            $price = $log->avg_sell_price ?? $log->avg_buy_price;
+            return $log->total_units * $price;
+        }), 2);
+
+        $this->total_units = round($this->logs()->sum('total_units'), 2);
+
+        $this->save();
+    }
 
     public function user()
     {

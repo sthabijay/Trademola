@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Entry;
 use App\Models\Log;
 use App\Models\Portfolio;
 use App\Models\Trade;
@@ -21,8 +22,12 @@ class Dashboard extends Component
     public ?WebTable $web_data = null;
     public $trades;
     public $logs;
+    public $entries;
+
     public $showLogModel = false;
     public $showEntryModel = false;
+    public $showAddTag = false;
+    public $showNoteTextbox = false;
 
     public $symbol;
     public $nickname;
@@ -33,18 +38,13 @@ class Dashboard extends Component
     public $tags;
     public $note;
 
-    public $portfolioId; 
+    public $portfolioId;
+    
+    public $price;
+    public $is_buy;
 
-    protected $rules = [
-        'symbol' => 'required|string|max:10',
-        'nickname' => 'nullable|string|max:50',
-        'units' => 'required|numeric|min:0.0001',
-        'buy_price' => 'required|numeric|min:0.0001',
-        'target' => 'nullable|numeric|min:0',
-        'stoploss' => 'nullable|numeric|min:0',
-        'tags' => 'nullable|string|max:255',
-        'note' => 'nullable|string',
-    ];
+    public $new_tag;
+    public $new_note;
 
     public function mount($id){
         $this->trades = Trade::where('user_id', Auth::id())->get();
@@ -56,70 +56,88 @@ class Dashboard extends Component
         $this->logs = Log::where('portfolio_id', $id)->orderBy('updated_at', 'desc')->get();
 
         $this->authorize('view', $this->selected_portfolio);
-    }
-
-    public function change($tradeId) {
-        $this->selected_trade = Trade::find($tradeId);
-        $this->web_data = WebTable::where('symbol', $this->selected_trade->symbol)->first();
+        
     }
 
     public function selectLog($logId){
         $this->selected_log = Log::find($logId);
+        $this->entries = Entry::where('log_id', $this->selected_log->id)->orderBy('updated_at', 'desc')->get();
+        $this->symbol = $this->selected_log->symbol;
     }
 
     public function createLog(){
-        $this->validate();
+        $this->validate([
+            'symbol' => 'required|string|max:10',
+            'nickname' => 'nullable|string|max:50',
+            'units' => 'required|numeric|min:1',
+            'buy_price' => 'required|numeric|min:0.0001',
+            'target' => 'nullable|numeric|min:0',
+            'stoploss' => 'nullable|numeric|min:0',
+            'tags' => 'nullable|string|max:255',
+            'note' => 'nullable|string',
+        ]);
 
-        $log = [
-            'symbol' => 'AAPL',
-            'nickname' => 'Swing Trade',
-            'total_units' => 94,
-            'gross' => 71568,
-            'avg_buy_price' => 307,
-            'target' => 2234,
-            'stoploss' => 427,
-            'avg_sell_price' => null,
-            'rating' => 4,
-            'tags' => [],
-            'note' => 'This is a random trade log entry. Adjust parameters as needed.'
-        ];
-
-        Log::create([
-            'portfolio_id' => $this->portfolioId, // Replace with the actual portfolio id
+        $logCreated = Log::create([
+            'portfolio_id' => $this->portfolioId,
             'symbol' => $this->symbol,
             'nickname' => $this->nickname,
             'total_units' => $this->units,
-            'gross' => 500,
+            'gross' => 0,
             'avg_buy_price' => $this->buy_price,
             'target' => $this->target ?? intval($this->buy_price * 1.1),
             'stoploss' => $this->stoploss ?? intval($this->buy_price * 0.95),
-            'rating' => $log['rating'],
-            'tags' => json_encode([]),
-            'note' => $log['note'],
+            'tags' => json_encode([$this->tags]),
+            'note' => $this->note,
+        ]);
+
+        Entry::create([
+            'log_id'=>$logCreated->id,
+            'symbol'=>$this->symbol,
+            'price'=>$this->buy_price,
+            'units'=>$this->units,
+            'is_buy'=>true,
         ]);
 
         return redirect()->to("/dashboard/{$this->portfolioId}");
     }
 
-    public function addEntry()
+    public function createEntry()
     {
-        $this->showEntryModel = true;
-        $this->symbol = $this->selected_log->symbol;
+        $this->validate([
+            'symbol' => 'required|string|max:10',
+            'price' => 'required|numeric|min:0.0001',
+            'units' => ['required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
+            if (!$this->is_buy && $value > $this->selected_log->total_units) {
+                $fail("You can't sell more than you own (Max: {$this->selected_log->total_units}).");
+            }
+        }],
+            'is_buy' => 'required|boolean',
+        ]);
+        
+        Entry::create([
+            'log_id' => $this->selected_log->id,
+            'symbol' => $this->symbol,
+            'price' => $this->price,
+            'units' => $this->units,
+            'is_buy' => $this->is_buy,
+        ]);
+
+        return redirect()->to("/dashboard/{$this->portfolioId}");
     }
 
-    public function addTrade()
+    public function addTag()
     {
-        return redirect()->to('/trade/add');
-    }
+        $tags = json_decode($this->selected_log->tags, true) ?? [];
 
-    public function deleteTrade(Trade $trade){
-        $trade->delete();
+        if ($this->new_tag && !in_array($this->new_tag, $tags)) {
+            $tags[] = $this->new_tag;
 
-        return redirect()->to('/dashboard');
-    }
+            $this->selected_log->tags = json_encode($tags);
+            $this->selected_log->save();
 
-    public function editTrade(Trade $trade){
-        return redirect()->to("/trade/edit/{$trade->id}");
+            $this->new_tag = '';
+            $this->showAddTag = false;
+        }
     }
     
     public function registerUser(){
@@ -144,4 +162,24 @@ class Dashboard extends Component
     {
         return view('livewire.dashboard');
     }
+
+    // public function change($tradeId) {
+    //     $this->selected_trade = Trade::find($tradeId);
+    //     $this->web_data = WebTable::where('symbol', $this->selected_trade->symbol)->first();
+    // }
+
+    // public function addTrade()
+    // {
+    //     return redirect()->to('/trade/add');
+    // }
+
+    // public function deleteTrade(Trade $trade){
+    //     $trade->delete();
+
+    //     return redirect()->to('/dashboard');
+    // }
+
+    // public function editTrade(Trade $trade){
+    //     return redirect()->to("/trade/edit/{$trade->id}");
+    // }
 }

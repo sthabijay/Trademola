@@ -13,6 +13,7 @@ class Portfolios extends Component
     public $portfolioName = "";
     public $user;
     public $portfolios;
+    public $percent;
 
     public function mount(){
         $this->user = Auth::user()->id;   

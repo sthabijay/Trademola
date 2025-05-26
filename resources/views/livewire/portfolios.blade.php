@@ -65,43 +65,53 @@
         <main class="bg-white w-full p-4 border-2 rounded-xl border-gray-300">
             <h1 class="text-xl text-gray-500 pb-4">Portfolios</h1>
             <button wire:click="$set('show', true)" class="w-[200px] bg-cyan-700 py-2 rounded-lg border border-cyan-700 text-white hover:bg-white hover:border-cyan-700 hover:text-cyan-700 transition-all cursor-pointer">+ Add Portfolio</button>
-            <div class="py-4 overflow-scroll h-[660px] no-scrollbar">
+            <div class="py-4 overflow-scroll h-[660px] no-scrollbar flex flex-col gap-4">
                 @foreach($portfolios as $portfolio)
-                    <div wire:click='navigate({{$portfolio->id}})' class="p-4 flex flex-col gap-2 border border-gray-300 rounded-xl hover:bg-blue-50 transition-all cursor-pointer">
+                    <div class="p-4 flex flex-col gap-2 border border-gray-300 rounded-xl hover:bg-blue-50 transition-all">
                         <div class="flex text-xl gap-2 justify-between">
                             <div>
                                 <h1>Portfolio Name:</h1>
                                 <h1 class="font-bold">{{$portfolio->name}}</h1>
                             </div>
-                            @if(!$portfolio->IS_MAIN)
-                                <button wire:click='deletePortfolio({{$portfolio->id}})' class="bg-red-500 px-4 py-2 h-fit rounded-lg text-white hover:bg-red-600 transition-all cursor-pointer">Delete</button>
-                            @endif                                                   
+                            <div>
+                                <button title="View" wire:click='navigate({{$portfolio->id}})' class="bg-blue-500 px-4 py-2 h-fit rounded-lg text-white border border-blue-500 hover:bg-white hover:text-blue-500 transition-all cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link-icon lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                                </button>
+                                @if(!$portfolio->IS_MAIN)
+                                    <button title="Delete" wire:click='deletePortfolio({{$portfolio->id}})' class="bg-red-500 px-4 py-2 h-fit rounded-lg text-white border border-red-500 hover:bg-white hover:text-red-500 transition-all cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-minus-icon lucide-circle-minus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+                                    </button>
+                                @endif  
+                            </div>
+                                                                             
                         </div>
-                    <h1 class="text-gray-500 text-lg">Last Updated: Thu, Apr 10</h1>
+                    <h1 class="text-gray-500 text-lg">Last Updated: {{\Carbon\Carbon::parse($portfolio->updated_at)->format('D, M d')}}</h1>
                     <div class="flex gap-2">
                         <div class="bg-green-200 w-[330px] p-2 rounded-lg border border-green-500">
                             <h1 class="text-gray-500 text-xl">Total Gain / Loss</h1>
                             <div class="flex items-center text-3xl text-green-600 justify-between">
-                                <h1>+Rs 12,000</h1>
-                                <span class="text-green-600 bg-green-300 py-1 px-2 rounded-lg">+12%</span>
+                                <h1>{{$portfolio->gross}}</h1>
+                                <span class="text-green-600 bg-green-300 py-1 px-2 rounded-lg"> {{ $portfolio->current_investment > 0 
+                                ? number_format((($portfolio->current_value - $portfolio->current_investment) / $portfolio->current_investment) * 100, 2) 
+                                : '0.00' }}%</span>
                             </div>
                         </div>
                         <div class="bg-purple-200 w-[330px] p-2 rounded-lg border border-purple-500">
                             <h1 class="text-gray-500 text-xl">Current Investment</h1>
                             <div class="flex items-center text-3xl text-gray-800 justify-between">
-                                <h1 class="py-1 px-2">Rs 100,000</h1>
+                                <h1 class="py-1 px-2">{{$portfolio->current_investment}}</h1>
                             </div>
                         </div>
                         <div class="bg-orange-100 w-[330px] p-2 rounded-lg border border-orange-500">
                             <h1 class="text-gray-500 text-xl">Current Value</h1>
                             <div class="flex items-center text-3xl text-gray-800 justify-between">
-                                <h1 class="py-1 px-2">Rs 112,000</h1>
+                                <h1 class="py-1 px-2">{{$portfolio->current_value}}</h1>
                             </div>
                         </div>
                         <div class="bg-blue-200 w-[330px] p-2 rounded-lg border border-blue-500">
                             <h1 class="text-gray-500 text-xl">Units</h1>
                             <div class="flex items-center text-3xl text-gray-800 justify-between">
-                                <h1 class="py-1 px-2">100</h1>
+                                <h1 class="py-1 px-2">{{$portfolio->total_units}}</h1>
                             </div>
                         </div>
                     </div>
